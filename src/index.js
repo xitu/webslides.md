@@ -7,21 +7,9 @@ import './css/fix.css';
 import {marked} from 'marked';
 import mermaid from './extensions/mermaid';
 import katex from './extensions/katex';
+import html from './extensions/html';
 
-function addCSS(url) {
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.type = 'text/css';
-  link.href = url;
-  document.head.appendChild(link);
-}
-
-function htmlDecode(input){
-  var e = document.createElement('textarea');
-  e.innerHTML = input;
-  // handle case of empty input
-  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-}
+import {addCSS, htmlDecode, trimIndent} from './utils';
 
 const defaultOptions = {
   loop: false,
@@ -29,7 +17,11 @@ const defaultOptions = {
     renderer: new marked.Renderer(),
     highlight: function(code, lang) {
       const Prism = require('prismjs');
-      return Prism.highlight(code, Prism.languages[lang], lang);
+      const language = Prism.languages[lang];
+      if(language) {
+        return Prism.highlight(code, language, lang);
+      }
+      return code;
     },
     // langPrefix: 'language-',
     pedantic: false,
@@ -49,58 +41,53 @@ Object.defineProperty(WebSlides.prototype, 'marked', {
   enumerable: true,
 });
 
+WebSlides.config = {
+  CDN: 'https://cdn.jsdelivr.net/npm', // https://unpkg.com
+  indent: true,
+};
+
 window.WebSlides = class MDSlides extends WebSlides {
   constructor({marked: markedOptions = {}, ...options} = {}) {
-    const container = document.querySelector('#webslides[type=markdown]');
+    const container = document.querySelector('#webslides');
     const {marked: defaultMarkedOptions, ...defaultOpts} = defaultOptions;
     if(container) {
-      const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
-      marked.setOptions(markedOpts);
-      marked.use(mermaid);
-      marked.use(katex);
-      const markdownText = htmlDecode(container.innerHTML).replace(/>\s*$/img,">\n")
-        .replace(/^:::(\w+)\s*(?:{(.*)})?\s*(?:\[(.*)\])?/im, function(a, b, c, d) {
-          const className = c ? `class="${c.replace(/\./g, ' ').trim()}"`: '';
-          return `<${b} ${className} ${d}>\n`;
-        }).replace(/^:::(\/\w+)/im, "<$1>");
+      const sections = container.querySelectorAll('section');
+      if(sections.length) {
+        const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
+        marked.setOptions(markedOpts);
+        [mermaid, katex, html].forEach(marked.use.bind(marked));
 
-      const slidesContent = markdownText.split(/^------/img).filter(c => c.trim());
-      slidesContent.forEach((text) => {
-        // console.log(text);
-        let className, attributes;
-        text = text.replace(/^:::\s*(?:{(.*)})?\s*(?:\[(.*)\])?/im, function(a, b, c) {
-          className = b;
-          if(c) {
-            attributes = c.split(/\s+/).map(s => s.split('='));
+        sections.forEach((section) => {
+          let content = htmlDecode(section.innerHTML);
+          if(WebSlides.config.indent) {
+            content = trimIndent(content);
           }
-          return '';
+          content = content.replace(/^:::(\w+)[^\S\n]*(?:{(.*)})?[^\S\n]*(?:\[(.*)\])?[^\S\n]*((.*):::)?/img, function(a, b, c, d, e, f) {
+              const className = c ? `class="${c.replace(/\./g, ' ').trim()}"`: '';
+              let ret = `<${b} ${className}${d?' '+d:''}>${e?`${f}</${b}>`:''}`;
+              return ret;
+            })
+            .replace(/^:::(\/\w+)/img, "<$1>\n")
+            .replace(/>[^\S\n]*$/img,">\n");
+          
+          section.innerHTML = marked.parse(content);
         });
-        const html = marked.parse(text);
-        const section = document.createElement('section');
-        // section.className = "slide-top";
-        if(className) section.className = className.replace(/\./g, ' ').trim();
-        if(attributes) {
-          attributes.forEach(([k, v]) => {
-            section.setAttribute(k, v);
+        
+        if(markedOpts.renderer.hasMermaid) {
+          document.addEventListener('DOMContentLoaded',function(){
+            const scriptEl = document.createElement('script');
+            scriptEl.src = `${WebSlides.config.CDN}/mermaid/dist/mermaid.min.js`;
+            scriptEl.crossorigin = "anonymous";
+            document.documentElement.appendChild(scriptEl);
           });
         }
-        section.innerHTML = html;
-        container.appendChild(section);
-      });
-      if(markedOpts.renderer.hasMermaid) {
-        document.addEventListener('DOMContentLoaded',function(){
-          const scriptEl = document.createElement('script');
-          scriptEl.src = 'https://unpkg.com/mermaid/dist/mermaid.min.js';
-          scriptEl.crossorigin = "anonymous";
-          document.documentElement.appendChild(scriptEl);
-        });
       }
     }
     options = Object.assign({}, defaultOpts, options);
     let {codeTheme} = options;
     if(codeTheme) {
       if(!/^http(s?):\/\//.test(codeTheme)) {
-        codeTheme = `https://unpkg.com/prism-themes@1.9.0/themes/${codeTheme}.css`;
+        codeTheme = `${WebSlides.config.CDN}/prism-themes@1.9.0/themes/${codeTheme}.css`;
       }
       addCSS(codeTheme);
     }

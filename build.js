@@ -13,10 +13,15 @@ const options = {
 };
 
 if(process.env.mode === 'production') {
+  options.outfile = 'dist/mdslides.js';
+  require('esbuild').buildSync({minify: true, ...options});
+} else if(process.env.mode === 'doc') {
+  options.outfile = 'docs/static/mdslides.js';
   require('esbuild').buildSync({minify: true, ...options});
 } else {
+  options.outfile = 'docs/static/mdslides.js';
   require('esbuild').serve({
-    servedir: '.',
+    servedir: 'docs',
   }, options).then(server => {
     // Call "stop" on the web server to stop serving
     // server.stop();

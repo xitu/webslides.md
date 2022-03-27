@@ -8,9 +8,11 @@
     "url": "https://github.com/xitu/webslides.md"
   },
   "scripts": {
-    "start": "npm run dev",
-    "dev": "node build.js",
+    "start": "npm run doc",
+    "doc": "node build.js",
     "build": "mode=production node build.js",
+    "build:doc": "mode=doc node build.js",
+    "prepublishOnly": "npm run build & npm run build:doc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "akira-cn",
