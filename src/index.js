@@ -56,7 +56,7 @@ window.WebSlides = class MDSlides extends WebSlides {
       if(sections.length) {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
         marked.setOptions(markedOpts);
-        marked.use({extensions: [mermaid, katex]});
+        marked.use({extensions: [mermaid, ...katex]});
         marked.use(html);
         marked.use(shorthand);
 

@@ -1,3 +1,13 @@
+/*
+:::div{classA classB}[attrA="a" attrB="b"]Text:::
+<div class="classA classB" attrA="a" attrB="b">Text</div>
+
+:::div{classA classB}[attrA="a" attrB="b"]
+Test1
+Test2
+:::/div
+*/
+
 // Override function
 const tokenizer = {
   html(src) {
