@@ -8,6 +8,7 @@ import {marked} from 'marked';
 import mermaid from './extensions/mermaid';
 import katex from './extensions/katex';
 import html from './extensions/html';
+import shorthand from './extensions/shorthand';
 
 import {addCSS, htmlDecode, trimIndent} from './utils';
 
@@ -55,25 +56,20 @@ window.WebSlides = class MDSlides extends WebSlides {
       if(sections.length) {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
         marked.setOptions(markedOpts);
-        [mermaid, katex, html].forEach(marked.use.bind(marked));
+        marked.use({extensions: [mermaid, katex]});
+        marked.use(html);
+        marked.use(shorthand);
 
         sections.forEach((section) => {
           let content = htmlDecode(section.innerHTML);
           if(WebSlides.config.indent) {
             content = trimIndent(content);
           }
-          content = content.replace(/^:::(\w+)[^\S\n]*(?:{(.*)})?[^\S\n]*(?:\[(.*)\])?[^\S\n]*((.*):::)?/img, function(a, b, c, d, e, f) {
-              const className = c ? `class="${c.replace(/\./g, ' ').trim()}"`: '';
-              let ret = `<${b} ${className}${d?' '+d:''}>${e?`${f}</${b}>`:''}`;
-              return ret;
-            })
-            .replace(/^:::(\/\w+)/img, "<$1>\n")
-            .replace(/>[^\S\n]*$/img,">\n");
+          content = content.replace(/>[^\S\n]*$/img,">\n");
           
           section.innerHTML = marked.parse(content);
         });
-        
-        if(markedOpts.renderer.hasMermaid) {
+        if(mermaid.state.hasMermaid) {
           document.addEventListener('DOMContentLoaded',function(){
             const scriptEl = document.createElement('script');
             scriptEl.src = `${WebSlides.config.CDN}/mermaid/dist/mermaid.min.js`;
