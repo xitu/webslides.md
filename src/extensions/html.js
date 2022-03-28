@@ -3,7 +3,6 @@ const tokenizer = {
   html(src) {
     const match = src.match(/^<!--html-->([\s\S]+?)<!--\/html-->/);
     if (match) {
-      // console.log(match[1].trim());
       return {
         type: 'html',
         raw: match[0],

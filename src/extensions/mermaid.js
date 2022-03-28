@@ -6,7 +6,6 @@ export default {
   tokenizer(src) {
     const match = src.match(/^<!--mermaid-->([\s\S]+?)<!--\/mermaid-->/);
     if (match) {
-      // console.log(match[1].trim());
       return {
         type: 'mermaid',
         raw: match[0],

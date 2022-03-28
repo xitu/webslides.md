@@ -35,19 +35,15 @@ const defaultOptions = {
   },
 };
 
-Object.defineProperty(WebSlides.prototype, 'marked', {
-  value: marked,
-  writable: false,
-  configurable: false,
-  enumerable: true,
-});
-
 WebSlides.config = {
   CDN: 'https://cdn.jsdelivr.net/npm', // https://unpkg.com
   indent: true,
 };
 
 window.WebSlides = class MDSlides extends WebSlides {
+  static get marked() {
+    return marked;
+  }
   constructor({marked: markedOptions = {}, ...options} = {}) {
     const container = document.querySelector('#webslides');
     const {marked: defaultMarkedOptions, ...defaultOpts} = defaultOptions;
