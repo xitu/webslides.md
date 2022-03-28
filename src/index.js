@@ -35,7 +35,7 @@ const defaultOptions = {
   },
 };
 
-WebSlides.config = {
+const config = {
   CDN: 'https://cdn.jsdelivr.net/npm', // https://unpkg.com
   indent: true,
 };
@@ -43,6 +43,9 @@ WebSlides.config = {
 window.WebSlides = class MDSlides extends WebSlides {
   static get marked() {
     return marked;
+  }
+  static get config() {
+    return config;
   }
   constructor({marked: markedOptions = {}, ...options} = {}) {
     const container = document.querySelector('#webslides');
