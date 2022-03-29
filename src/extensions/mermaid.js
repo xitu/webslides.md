@@ -14,11 +14,23 @@ export default {
     }
   },
   renderer(token) {
-    const code = token.text;
-    state.hasMermaid = true;
-    return `<div class="mermaid aligncenter">
-${code}
+    let code = `<div class="mermaid aligncenter">
+${token.text}
 </div>`;
+    if(!state.hasMermaid) {
+      state.hasMermaid = true;
+      const scriptEl = document.createElement('script');
+      scriptEl.src = `${WebSlides.config.CDN}/mermaid/dist/mermaid.min.js`;
+      scriptEl.crossorigin = "anonymous";
+      document.documentElement.appendChild(scriptEl);
+      scriptEl.onload = () => {
+        mermaid.startOnLoad = false;
+        mermaid.initialize({});
+        const mermaidGraphs = document.querySelectorAll('.slide.current .mermaid');
+        mermaid.init(mermaidGraphs);
+      };
+    }
+    return code;
   },
   state,
 };

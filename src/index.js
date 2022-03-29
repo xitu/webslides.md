@@ -48,7 +48,7 @@ window.WebSlides = class MDSlides extends WebSlides {
     return config;
   }
   constructor({marked: markedOptions = {}, ...options} = {}) {
-    const container = document.querySelector('#webslides');
+    const container = document.querySelector('#webslides:not([done="done"])');
     const {marked: defaultMarkedOptions, ...defaultOpts} = defaultOptions;
     if(container) {
       const sections = container.querySelectorAll('section');
@@ -68,15 +68,17 @@ window.WebSlides = class MDSlides extends WebSlides {
           
           section.innerHTML = marked.parse(content);
         });
-        if(mermaid.state.hasMermaid) {
-          document.addEventListener('DOMContentLoaded',function(){
-            const scriptEl = document.createElement('script');
-            scriptEl.src = `${WebSlides.config.CDN}/mermaid/dist/mermaid.min.js`;
-            scriptEl.crossorigin = "anonymous";
-            document.documentElement.appendChild(scriptEl);
-          });
-        }
       }
+      container.setAttribute('done', 'done');
+      if(!options.codeTheme && container.hasAttribute('codeTheme')) {
+        options.codeTheme = container.getAttribute('codeTheme');
+      }
+      container.addEventListener('ws:slide-change', () => {
+        if(window.mermaid && window.mermaid.init) {
+          const mermaidGraphs = document.querySelectorAll('.slide.current .mermaid');
+          window.mermaid.init(mermaidGraphs);
+        }
+      });
     }
     options = Object.assign({}, defaultOpts, options);
     let {codeTheme} = options;
@@ -90,4 +92,8 @@ window.WebSlides = class MDSlides extends WebSlides {
   }
 };
 
+document.addEventListener('DOMContentLoaded',function(){
+  const container = document.querySelector('#webslides:not([done="done"])');
+  if(container) new WebSlides();
+});
 // export default marked;
