@@ -1,7 +1,7 @@
 const options = {
   entryPoints: ['src/index.js'],
   // outdir: 'dist',
-  outfile: 'dist/mdslides.js',
+  outfile: 'dist/webslides.js',
   bundle: true,
   loader: {
     '.png': 'base64',
@@ -13,13 +13,13 @@ const options = {
 };
 
 if(process.env.mode === 'production') {
-  options.outfile = 'dist/mdslides.js';
+  options.outfile = 'dist/webslides.js';
   require('esbuild').buildSync({minify: true, ...options});
 } else if(process.env.mode === 'doc') {
-  options.outfile = 'docs/static/mdslides.js';
+  options.outfile = 'docs/static/webslides.js';
   require('esbuild').buildSync({minify: true, ...options});
 } else {
-  options.outfile = 'docs/static/mdslides.js';
+  options.outfile = 'docs/static/webslides.js';
   require('esbuild').serve({
     servedir: 'docs',
   }, options).then(server => {
