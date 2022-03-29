@@ -9,7 +9,7 @@ export default [{
   name: 'katex',
   level: 'block',
   tokenizer(src) {
-    const match = src.match(/^<!--katex-->([\s\S]+?)<!--\/katex-->/);
+    const match = src.match(/^<!--katex-->([\s\S]+?)<!--\/katex-->/i);
     if (match) {
       return {
         type: 'katex',

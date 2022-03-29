@@ -4,7 +4,7 @@ export default {
   name: 'mermaid',
   level: 'block',
   tokenizer(src) {
-    const match = src.match(/^<!--mermaid-->([\s\S]+?)<!--\/mermaid-->/);
+    const match = src.match(/^<!--mermaid-->([\s\S]+?)<!--\/mermaid-->/i);
     if (match) {
       return {
         type: 'mermaid',

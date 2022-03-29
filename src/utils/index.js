@@ -3,7 +3,7 @@ export function addCSS(url) {
   link.rel = 'stylesheet';
   link.type = 'text/css';
   link.href = url;
-  document.head.appendChild(link);
+  document.documentElement.appendChild(link);
 }
 
 export function htmlDecode(input){
