@@ -10,10 +10,18 @@ import katex from './extensions/katex';
 import html from './extensions/html';
 import shorthand from './extensions/shorthand';
 
+import config from './config';
 import {addCSS, htmlDecode, trimIndent} from './utils';
 
 const defaultOptions = {
   loop: false,
+  autoslide: false,
+  changeOnClick: false,
+  showIndex: true,
+  navigateOnScroll: true,
+  minWheelDelta: 40,
+  scrollWait: 450,
+  slideOffset: 50,
   marked: {
     renderer: new marked.Renderer(),
     highlight: function(code, lang) {
@@ -35,10 +43,21 @@ const defaultOptions = {
   },
 };
 
-const config = {
-  CDN: 'https://cdn.jsdelivr.net/npm', // https://unpkg.com
-  indent: true,
-};
+function applyConfig(config, el) {
+  Object.keys(config).forEach((key) => {
+    if(el.hasAttribute(key)) {
+      let value = el.getAttribute(key);
+      const type = typeof config[key];
+      if(type === 'boolean') {
+        config[key] = value && value !== 'no' && value !== 'false';
+      } else if(type === 'number') {
+        config[key] = Number(value);
+      } else {
+        config[key] = value;
+      }
+    }
+  });
+}
 
 window.WebSlides = class MDSlides extends WebSlides {
   static get marked() {
@@ -50,7 +69,10 @@ window.WebSlides = class MDSlides extends WebSlides {
   constructor({marked: markedOptions = {}, ...options} = {}) {
     const container = document.querySelector('#webslides:not([done="done"])');
     const {marked: defaultMarkedOptions, ...defaultOpts} = defaultOptions;
+    options = Object.assign({}, defaultOpts, options);
     if(container) {
+      applyConfig(config, container);
+      applyConfig(options, container);
       const sections = container.querySelectorAll('section');
       if(sections.length) {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
@@ -80,9 +102,8 @@ window.WebSlides = class MDSlides extends WebSlides {
         }
       });
     }
-    options = Object.assign({}, defaultOpts, options);
-    let {codeTheme} = options;
-    if(codeTheme) {
+    let {codeTheme} = config;
+    if(codeTheme && codeTheme !== 'default') {
       if(!/^http(s?):\/\//.test(codeTheme)) {
         codeTheme = `${WebSlides.config.CDN}/prism-themes@1.9.0/themes/${codeTheme}.css`;
       }
