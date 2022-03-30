@@ -23,7 +23,7 @@ export default {
         attributes: match[2] ? match[2].trim() : null,
       };
     }
-    match = src.match(/^<!--([^{}\[\]\n]+?)-->/i);
+    match = src.match(/^<!--\s*(\.[^{}\[\]\n]+?)-->/i);
     if(match) {
       return {
         type: 'prestyle',
