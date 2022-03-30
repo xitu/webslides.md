@@ -26,6 +26,9 @@ ${token.text}
       scriptEl.onload = () => {
         mermaid.startOnLoad = false;
         mermaid.initialize({});
+        mermaid.parseError = function(err){
+          console.error(err);
+        };
         const mermaidGraphs = document.querySelectorAll('.slide.current .mermaid');
         mermaid.init(mermaidGraphs);
       };
