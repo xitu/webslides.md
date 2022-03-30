@@ -39,11 +39,17 @@
 
 ### NodePPT
 
-[三水清](https://github.com/ksky521)老师的 [NodePPT](https://github.com/ksky521/nodeppt) 是迄今为止最好用的 Web 演讲工具。如果你使用 NodeJS，你可以安装这个工具，用 Markdown 创作 PPT 并运行 Node 服务来演示 PPT。
+[三水清](https://github.com/ksky521)老师的 [NodePPT](https://github.com/ksky521/nodeppt) 是迄今为止最好用的 Web 演讲工具之一。如果你使用 NodeJS，你可以安装这个工具，用 Markdown 创作 PPT 并运行 Node 服务来演示 PPT。
 
 NodePPT 也是结合了 WebSlides 和 Markdown，它通过 markdown-it 解析 Markdown、通过 posthtml 处理 HTML 标签。
 
 > 如果你需要一个专业的，在个人便携电脑上创作和运行 PPT 的工具，那么推荐 NodePPT，如果你希望在已有在线 Playground 平台上快速演示和分享 PPT，那么 WebSlides.md 是更简单的选择。
+
+### Slidev
+
+[Slidev](https://github.com/slidevjs/slidev) 是 [Anthony Fu](https://github.com/antfu) 大神主导开发的一个新项目，是为开发者打造的演示文稿工具。Slidev 旨在为开发者提供灵活性和交互性，通过使用他们已经熟悉的工具和技术，使他们的演示文稿更加有趣、更具表现力和吸引力。
+
+> 与 NodePPT 一样，Slidev 需要 NodeJS 环境进行项目初始化和本地部署。由于是较新的项目，它与 NodePPT 相比，提供更为丰富的主题、组件和扩展能力。项目的代码采用 TypeScript 编写并基于 Vue3 来渲染应用。
 
 ### 声享
 
@@ -124,6 +130,8 @@ NodePPT 也是结合了 WebSlides 和 Markdown，它通过 markdown-it 解析 Ma
 
 <h2 align="center">致谢</h2>
 
+这些项目为 WebSlides.md 提供了底层能力或设计思路参考。
+
 - [WebSlides](https://github.com/webslides/WebSlides)
 - [marked](https://github.com/markedjs/marked)
 - [prism](https://github.com/PrismJS/prism)
@@ -131,3 +139,4 @@ NodePPT 也是结合了 WebSlides 和 Markdown，它通过 markdown-it 解析 Ma
 - [mermaid](https://github.com/mermaid-js/mermaid)
 - [KaTex](https://github.com/KaTeX/KaTeX)
 - [NodePPT](https://github.com/ksky521/nodeppt)
+- [Slidev](https://github.com/slidevjs/slidev) 
