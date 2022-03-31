@@ -86,7 +86,7 @@ window.WebSlides = class MDSlides extends WebSlides {
             content = trimIndent(content);
           }
           content = content
-            .replace(/(\w-_")\s*>[^\S\n]*$/img,"$1>\n") //尽量在HTML标签后补回车
+            .replace(/([\w-_"])\s*>[^\S\n]*$/img,"$1>\n") //尽量在HTML标签后补回车
             .replace(/<!--([\^\$])?(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)-->/img, (a, b, c, d) => {
               const className = c ? c.replace(/\./g, ' ').trim() : null;
               const attrsJson = {};

@@ -1,6 +1,6 @@
 {
   "name": "webslides.md",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Integration of Webslides and Markdown.",
   "main": "dist/webslides.js",
   "repository": {
