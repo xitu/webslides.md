@@ -93,12 +93,11 @@ NodePPT 也是结合了 WebSlides 和 Markdown，它通过 markdown-it 解析 Ma
 
     $$ a^2 + b^2 = c^2 $$
 
-    <!--KaTex-->
-    % \f is defined as #1f(#2) using the macro
-    \f\relax{x} = \int_{-\infty}^\infty
-        \f\hat\xi\,e^{2 \pi i \xi x}
-        \,d\xi
-    <!--/KaTex-->
+    :@KaTex
+      % \f is defined as #1f(#2) using the macro
+      \f\relax{x} = \int_{-\infty}^\infty
+          \f\hat\xi\,e^{2 \pi i \xi x}
+          \,d\xi
   </section>
   <section class="bg-black-blue">
     # 我是第四页
@@ -109,12 +108,12 @@ NodePPT 也是结合了 WebSlides 和 Markdown，它通过 markdown-it 解析 Ma
     B --> C[Server01]
     B --> D[Server02]
     ```
-    <!--mermaid-->
-    graph TD
-    A[Client] --> B[Load Balancer]
-    B --> C[Server01]
-    B --> D[Server02]
-    <!--/mermaid-->
+    
+    :@mermaid
+      graph TD
+      A[Client] --> B[Load Balancer]
+      B --> C[Server01]
+      B --> D[Server02]
   </section>
 </article>
 ```
