@@ -23,16 +23,17 @@
       ```katex
       c = \pm\sqrt{a^2 + b^2}
       ```
-      <!--KaTex
-      {
-        "\\f": "#1f(#2)"
-      }    
-      -->
-      % \f is defined as #1f(#2) using the macro
-      \f\relax{x} = \int_{-\infty}^\infty
-          \f\hat\xi\,e^{2 \pi i \xi x}
-          \,d\xi
-      <!--/KaTex-->
+
+      :@Katex
+        {
+          "\\f": "#1f(#2)"
+        }    
+
+        % \f is defined as #1f(#2) using the macro
+        \f\relax{x} = \int_{-\infty}^\infty
+            \f\hat\xi\,e^{2 \pi i \xi x}
+            \,d\xi
+
       $$ r=x^2+y^2 $$
       </div>
   </section>
@@ -45,16 +46,15 @@
     B --> C[Server01]
     B --> D[Server02]
     ```
-    <!--mermaid-->
-    graph TD
-    A[Client] --> B[Load Balancer]
-    B --> C[Server01]
-    B --> D[Server02]
-    <!--/mermaid-->
+
+    :@mermaid
+      graph TD
+      A[Client] --> B[Load Balancer]
+      B --> C[Server01]
+      B --> D[Server02]
+
     _hhaa_
-    <!--test-->
     abc
-    <!--/test-->
   </section>
   <section>
     # Slide 3
@@ -63,14 +63,16 @@
       abc
       ## def
         fff
+    <!--end wrap-->
+      ddd
     <!-- <canvas id="abc" class="alignleft size-50" width="400" height="400"></canvas> -->
   </section>
   <section>
     :.wrap
-      <!--.aligncenter.xyz[style="color:red"][abc="ddd"]-->
+      {^.aligncenter.xyz[style="color:red"][abc="ddd"]}
       # Slide 4
 
-      <!--.flexblock.border-->
+      {^.flexblock.border}
       - list
         - 1-1
         - 1-2

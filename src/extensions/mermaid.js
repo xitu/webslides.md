@@ -1,15 +1,18 @@
 const state = {};
 
+import {trimIndent} from '../utils';
+
 export default {
   name: 'mermaid',
   level: 'block',
+  // start(src) { return src.match(/:[^:\n]/)?.index; },
   tokenizer(src) {
-    const match = src.match(/^<!--mermaid-->([\s\S]+?)<!--\/mermaid-->/i);
+    const match = src.match(/^:\@mermaid\s*?((?:\n(?:[^\S\n]+[^\n]+)?)+)/i);
     if (match) {
       return {
         type: 'mermaid',
         raw: match[0],
-        text: match[1].trim()
+        text: trimIndent(match[1]).trim(),
       };
     }
   },

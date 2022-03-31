@@ -1,7 +1,8 @@
 // Override function
 const tokenizer = {
   html(src) {
-    const match = src.match(/^<!--html-->([\s\S]+?)<!--\/html-->/);
+    const match = src.match(/^:\@html\s*?((?:\n(?:[^\S\n]+[^\n]+)?)+)/i);
+    // console.log(src, match);
     if (match) {
       return {
         type: 'html',

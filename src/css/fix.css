@@ -1,5 +1,6 @@
 .token.number {
   display: inline;
+  padding: inherit;
 }
 
 blockquote {

@@ -1,4 +1,5 @@
 import katex from 'katex';
+import {trimIndent} from '../utils';
 
 function renderer(token) {
   const {text:code, macros} = token;
@@ -17,12 +18,16 @@ export default [{
   name: 'katex',
   level: 'block',
   tokenizer(src) {
-    const match = src.match(/^<!--katex(\s*[\s\S]*)?-->([\s\S]+?)<!--\/katex-->/i);
+    const match = src.match(/^:@katex\s*?((?:\n(?:[^\S\n]+[^\n]+)?)+)/i);
     if (match) {
-      let macros = match[1];
+      const body = trimIndent(match[1]).trim();
+      const m = body.match(/^(\{[\s\S]*?\})?([\s\S]*)/i);
+
+      let macros = m[1];
+
       if(macros) {
         try {
-          macros = JSON.parse(match[1]);
+          macros = JSON.parse(m[1]);
         } catch(ex) {
           console.error(ex.message);
         }
@@ -31,7 +36,7 @@ export default [{
         type: 'katex',
         raw: match[0],
         macros,
-        text: match[2].trim()
+        text: m[2].trim()
       };
     }
   },

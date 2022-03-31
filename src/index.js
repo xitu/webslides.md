@@ -77,8 +77,8 @@ window.WebSlides = class MDSlides extends WebSlides {
       if(sections.length) {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
         marked.setOptions(markedOpts);
-        marked.use({extensions: [mermaid, wrapper, ...katex]});
         marked.use(html);
+        marked.use({extensions: [wrapper, mermaid, ...katex]});
 
         sections.forEach((section) => {
           let content = htmlDecode(section.innerHTML);
@@ -86,8 +86,8 @@ window.WebSlides = class MDSlides extends WebSlides {
             content = trimIndent(content);
           }
           content = content
-            .replace(/([\w-_"])\s*>[^\S\n]*$/img,"$1>\n") //尽量在HTML标签后补回车
-            .replace(/<!--([\^\$])?(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)-->/img, (a, b, c, d) => {
+            .replace(/([\w_][\w-_"]*)\s*>[^\S\n]*$/img,"$1>\n") //尽量在HTML标签后补回车
+            .replace(/{([\^\$])(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)}/img, (a, b, c, d) => {
               const className = c ? c.replace(/\./g, ' ').trim() : null;
               const attrsJson = {};
               if(className) attrsJson.className = className;
