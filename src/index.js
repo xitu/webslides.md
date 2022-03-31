@@ -86,6 +86,7 @@ window.WebSlides = class MDSlides extends WebSlides {
             content = trimIndent(content);
           }
           content = content
+            .replace(/(\w-_)\s*>[^\S\n]*$/img,"$1>\n")
             .replace(/<!--([\^\$])?(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)-->/img, (a, b, c, d) => {
               const className = c ? c.replace(/\./g, ' ').trim() : null;
               const attrsJson = {};
@@ -98,8 +99,7 @@ window.WebSlides = class MDSlides extends WebSlides {
               });
               const attrs = JSON.stringify(attrsJson);
               return (!b || b === '^') ? `<!--^${attrs}-->` : `<!--$${attrs}-->`;
-            })
-            .replace(/>[^\S\n]*$/img,">\n");
+            });
 
           section.innerHTML = marked.parse(content)
             .replace(/<!--([\^\$])\s*([^\n]*?)-->/img, '<textarea type="webslides-attrs" style="display:none" position="$1">$2</textarea>');
@@ -107,14 +107,16 @@ window.WebSlides = class MDSlides extends WebSlides {
           const preattrs = section.querySelectorAll('textarea[type="webslides-attrs"]');
           preattrs.forEach((el) => {
             const node = el.getAttribute('position') === '^' ? el.nextElementSibling : el.previousElementSibling;
-            const attrs = JSON.parse(el.textContent);
-            for(const [k, v] of Object.entries(attrs)) {
-              if(k === 'className') {
-                node.className = node.className ? `${node.className} ${v}` : v;
+            if(node) {
+              const attrs = JSON.parse(el.textContent);
+              for(const [k, v] of Object.entries(attrs)) {
+                if(k === 'className') {
+                  node.className = node.className ? `${node.className} ${v}` : v;
+                }
+                else node.setAttribute(k, v);
               }
-              else node.setAttribute(k, v);
+              el.remove();
             }
-            el.remove();
           });
         });
       }
