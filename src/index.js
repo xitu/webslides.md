@@ -11,7 +11,7 @@ import html from './extensions/html';
 import wrapper from './extensions/wrapper';
 
 import config from './config';
-import {addCSS, getAttrs, htmlDecode, trimIndent} from './utils';
+import {addCSS, htmlDecode, trimIndent} from './utils';
 
 const defaultOptions = {
   loop: false,
