@@ -24,3 +24,15 @@ export function trimIndent(input) {
   }
   return input;
 }
+
+export function getPrefix(token) {
+  let className = '';
+  let attributes = '';
+  if(token.className) {
+    className = ` class="${token.className}"`;
+  }
+  if(token.attributes) {
+    attributes = ` ${token.attributes}`;
+  }
+  return {className, attributes};
+}

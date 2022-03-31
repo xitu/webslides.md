@@ -11,32 +11,30 @@
 <body>
   <article id="webslides" codeTheme="prism-atom-dark" cdn="https://unpkg.com" loop="yes" showIndex="no">
   <section class="slide-top">
-    :::div [style="color:red"]
-    # Slide 1
-    <div class="wrap">
-    **abc**
-    _efg_
-    ```js
-    console.log(123);
-    ```
-    ---
-    ```katex
-    c = \pm\sqrt{a^2 + b^2}
-    ```
-    <!--KaTex
-    {
-      "\\f": "#1f(#2)"
-    }    
-    -->
-    % \f is defined as #1f(#2) using the macro
-    \f\relax{x} = \int_{-\infty}^\infty
-        \f\hat\xi\,e^{2 \pi i \xi x}
-        \,d\xi
-    <!--/KaTex-->
-    $$ r=x^2+y^2 $$
-    </div>
-    :::/div
-    :::em test:::
+    :div[style="color:red"]
+      # Slide 1
+      <div class="wrap">
+      **abc**
+      _efg_
+      ```js
+      console.log(123);
+      ```
+      ---
+      ```katex
+      c = \pm\sqrt{a^2 + b^2}
+      ```
+      <!--KaTex
+      {
+        "\\f": "#1f(#2)"
+      }    
+      -->
+      % \f is defined as #1f(#2) using the macro
+      \f\relax{x} = \int_{-\infty}^\infty
+          \f\hat\xi\,e^{2 \pi i \xi x}
+          \,d\xi
+      <!--/KaTex-->
+      $$ r=x^2+y^2 $$
+      </div>
   </section>
   <section>
     # Slide 2
@@ -61,33 +59,34 @@
   <section>
     # Slide 3
     <h1>123</h1>
-    # 33ddf
-    <canvas id="abc" class="alignleft size-50" width="400" height="400"></canvas>
+    :.wrap[style="color:red"]
+      abc
+      ## def
+        fff
+    <!-- <canvas id="abc" class="alignleft size-50" width="400" height="400"></canvas> -->
   </section>
   <section>
-    :::div{.wrap}
-    <!--{.aligncenter}[style="color:red"]-->
-    # Slide 4
+    :.wrap
+      <!--.aligncenter.xyz[style="color:red"][abc="ddd"]-->
+      # Slide 4
 
-    <!--.flexblock.border-->
-    - list
-      - 1-1
-      - 1-2
-      - 1-3
-    - list 2
-      - 2-1
-      - 2-2
-      - 2-3
-    - list 3
-      - 3-1 
-      - 3-2
-      - 3-3
-    - list 4
-      - 4-1
-      - 4-2
-      - 4-3
-
-    :::/div
+      <!--.flexblock.border-->
+      - list
+        - 1-1
+        - 1-2
+        - 1-3
+      - list 2
+        - 2-1
+        - 2-2
+        - 2-3
+      - list 3
+        - 3-1 
+        - 3-2
+        - 3-3
+      - list 4
+        - 4-1
+        - 4-2
+        - 4-3
   </section>
   </article>
 </body>
