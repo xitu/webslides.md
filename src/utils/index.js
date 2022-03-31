@@ -25,7 +25,7 @@ export function trimIndent(input) {
   return input;
 }
 
-export function getPrefix(token) {
+export function getAttrs(token) {
   let className = '';
   let attributes = '';
   if(token.className) {
@@ -34,5 +34,5 @@ export function getPrefix(token) {
   if(token.attributes) {
     attributes = ` ${token.attributes}`;
   }
-  return {className, attributes};
+  return `${className}${attributes}`;
 }

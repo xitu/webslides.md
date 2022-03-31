@@ -8,11 +8,10 @@ import {marked} from 'marked';
 import mermaid from './extensions/mermaid';
 import katex from './extensions/katex';
 import html from './extensions/html';
-import prestyle from './extensions/prestyle';
 import wrapper from './extensions/wrapper';
 
 import config from './config';
-import {addCSS, htmlDecode, trimIndent} from './utils';
+import {addCSS, getAttrs, htmlDecode, trimIndent} from './utils';
 
 const defaultOptions = {
   loop: false,
@@ -78,7 +77,7 @@ window.WebSlides = class MDSlides extends WebSlides {
       if(sections.length) {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
         marked.setOptions(markedOpts);
-        marked.use({extensions: [mermaid, prestyle, wrapper, ...katex]});
+        marked.use({extensions: [mermaid, wrapper, ...katex]});
         marked.use(html);
 
         sections.forEach((section) => {
@@ -86,10 +85,37 @@ window.WebSlides = class MDSlides extends WebSlides {
           if(WebSlides.config.indent) {
             content = trimIndent(content);
           }
-          content = content.replace(/>[^\S\n]*$/img,">\n");
+          content = content
+            .replace(/<!--([\^\$])?(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)-->/img, (a, b, c, d) => {
+              const className = c ? c.replace(/\./g, ' ').trim() : null;
+              const attrsJson = {};
+              if(className) attrsJson.className = className;
+              d.split(/[\[\]]+/g).forEach((f) => {
+                if(f) {
+                  const [k, v] = f.split('=');
+                  attrsJson[k] = v.replace(/^\s*"(.*)"$/i, "$1");
+                }
+              });
+              const attrs = JSON.stringify(attrsJson);
+              return (!b || b === '^') ? `<!--^${attrs}-->` : `<!--$${attrs}-->`;
+            })
+            .replace(/>[^\S\n]*$/img,">\n");
 
           section.innerHTML = marked.parse(content)
-            .replace(/<!--##\s*(.*?)-->\s*<(\w+)/img, "<$2 $1");
+            .replace(/<!--([\^\$])\s*([^\n]*?)-->/img, '<textarea type="webslides-attrs" style="display:none" position="$1">$2</textarea>');
+
+          const preattrs = section.querySelectorAll('textarea[type="webslides-attrs"]');
+          preattrs.forEach((el) => {
+            const node = el.getAttribute('position') === '^' ? el.nextElementSibling : el.previousElementSibling;
+            const attrs = JSON.parse(el.textContent);
+            for(const [k, v] of Object.entries(attrs)) {
+              if(k === 'className') {
+                node.className = node.className ? `${node.className} ${v}` : v;
+              }
+              else node.setAttribute(k, v);
+            }
+            el.remove();
+          });
         });
       }
       container.setAttribute('done', 'done');

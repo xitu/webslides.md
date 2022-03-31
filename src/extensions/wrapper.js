@@ -1,12 +1,12 @@
 // :tag.classA.classB[attrA="a"][attrB="b"]
-import {getPrefix, trimIndent} from '../utils';
+import {getAttrs, trimIndent} from '../utils';
 import {marked} from 'marked';
 
 export default {
   name: 'wrapper',
   level: 'block',
   tokenizer(src) {
-    let match = src.match(/^:([\w-_]*)(?:(\.[^\[\]\s]+)*)((?:\[[^\[\]]+\])*)((?:[^\S\n]*[\S][^\n]*)?)\s*?\n((?:\s+[^\n]+\n)*)/i);
+    let match = src.match(/^:([\w-_]*)(\.[^\[\]\s]+)?((?:\[[^\[\]]+\])*)((?:[^\S\n]*[\S][^\n]*)?)\s*?\n((?:\s+[^\n]+\n)*)/i);
     if(match) {
       return {
         type: 'wrapper',
@@ -20,10 +20,10 @@ export default {
     }
   },
   renderer(token) {
-    console.log(token);
+    // console.log(token);
     const {tagName, text, body} = token;
-    const {className, attributes} = getPrefix(token);
+    const attrs = getAttrs(token);
 
-    return `<${tagName}${className}${attributes}>${text}${marked.parse(body)}</${tagName}>\n`;
+    return `<${tagName}${attrs}>${text}${marked.parse(body)}</${tagName}>\n`;
   }
 };
