@@ -9,6 +9,7 @@ import mermaid from './extensions/mermaid';
 import katex from './extensions/katex';
 import html from './extensions/html';
 import wrapper from './extensions/wrapper';
+import svgicon from './extensions/svgicon';
 
 import config from './config';
 import {addCSS, htmlDecode, trimIndent} from './utils';
@@ -78,7 +79,7 @@ window.WebSlides = class MDSlides extends WebSlides {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
         marked.setOptions(markedOpts);
         marked.use(html);
-        marked.use({extensions: [wrapper, mermaid, ...katex]});
+        marked.use({extensions: [wrapper, mermaid, svgicon, ...katex]});
 
         sections.forEach((section) => {
           let content = htmlDecode(section.innerHTML);
@@ -86,8 +87,14 @@ window.WebSlides = class MDSlides extends WebSlides {
             content = trimIndent(content);
           }
           content = content
-            .replace(/([\w_][\w-_"]*)\s*>[^\S\n]*$/img,"$1>\n") //尽量在HTML标签后补回车
-            .replace(/{([\^\$])(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)}/img, (a, b, c, d) => {
+            .replace(/([\w_][\w-_"]*)\s*>[^\S\n]*\n(?![^\S\n]*<)/img,(a, b) => {
+              if(b === 'div' || b === 'p' || /^h/.test(b)) {
+                return `${b}>\n\n`;
+              }
+              return `${b}>\n`;
+            }); //尽量在HTML标签后补回车
+          
+          content = content.replace(/{([\^\$])(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)}/img, (a, b, c, d) => {
               const className = c ? c.replace(/\./g, ' ').trim() : null;
               const attrsJson = {};
               if(className) attrsJson.className = className;

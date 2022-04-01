@@ -5,8 +5,12 @@ import {marked} from 'marked';
 export default {
   name: 'wrapper',
   level: 'block',
+  // start(src) {
+  //   const match = src.match(/>\n:[^:\n]/);
+  //   if(match) return match.index;
+  // },
   tokenizer(src) {
-    let match = src.match(/^:([\w-_]*)(\.[^\[\]\s]+)?((?:\[[^\[\]]+\])*)((?:[^\S\n]*[^\s@][^\n]*)?)\s*?((?:\n(?:[^\S\n]+[^\n]+)?)*)/i);
+    const match = src.match(/^:([\w-_]*)(\.[^\[\]\s]+)?((?:\[[^\[\]]+\])*)((?:[^\S\n]*[^\s@][^\n]*)?)\s*?((?:\n(?:[^\S\n]+[^\n]+)?)*)/i);
     if(match) {
       if(match[0] === ':') return; // none match
       return {
