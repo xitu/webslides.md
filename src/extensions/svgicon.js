@@ -9,28 +9,27 @@ export default {
   },
   tokenizer(src) {
     // console.log(src);
-    const match = src.match(/^{@\s*([\w_][\w-_]*)(?:\?([\w.]+))?\s*}/i);
+    const match = src.match(/^{@\s*([\w_][\w-_]*)(?:\?([^\s]+))?\s*?}/i);
     if(match) {
       return {
         type: 'icon',
         raw: match[0],
         file: match[1],
-        size: match[2],
+        query: match[2],
       };
     }
   },
   renderer(token) {
-    const {file, size} = token;
+    const {file, query} = token;
     let className = "svgicon";
     let attrs = '';
-    if(size) {
-      const match = size.match(/^(\d+)x(\d+)/i);
-      if(match) {
-        attrs = ` width=${match[1]} height=${match[2]}`;
-      } else if(size === 'large' || size === 'small') {
-        className = `${className} ${size}`;
-      } else {
-        attrs = ` style="width:${size}"`;
+    if(query) {
+      const {searchParams} = new URL(`svgicon://svgicon?${query}`);
+      for(let [key, value] of searchParams.entries()) {
+        attrs = `${attrs} ${key}="${value}"`;
+        if(key === 'style') {
+          attrs = `${attrs} data-style=${value}`;
+        }
       }
     } else {
       className = `${className} small`;

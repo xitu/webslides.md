@@ -60,6 +60,19 @@ function applyConfig(config, el) {
   });
 }
 
+async function loadSvgIcon(el) {
+  const res = await (await fetch(el.src)).text();
+  const frag = document.createElement('div');
+  frag.innerHTML = res;
+  const svg = frag.childNodes[0];
+  svg.style = `width:${el.clientWidth}px;height:${el.clientHeight}px;vertical-align:text-bottom;margin:0 0.25em;${el.dataset.style ? el.dataset.style : ''}`;
+  if(el.hasAttribute('fill')) {
+    svg.style.fill = el.getAttribute('fill');
+  }
+  el.parentNode.insertBefore(frag.childNodes[0], el);
+  el.remove();
+}
+
 window.WebSlides = class MDSlides extends WebSlides {
   static get marked() {
     return marked;
@@ -110,7 +123,7 @@ window.WebSlides = class MDSlides extends WebSlides {
 
           section.innerHTML = marked.parse(content)
             .replace(/<!--([\^\$])\s*([^\n]*?)-->/img, '<script type="text/webslides-attrs" position="$1">$2</script>');
-
+          
           const preattrs = section.querySelectorAll('script[type="text/webslides-attrs"]');
           preattrs.forEach((el) => {
             const node = el.getAttribute('position') === '^' ? el.nextElementSibling : el.previousElementSibling;
@@ -123,6 +136,16 @@ window.WebSlides = class MDSlides extends WebSlides {
                 else node.setAttribute(k, v);
               }
               el.remove();
+            }
+          });
+
+          // svgicon
+          const svgicons = section.querySelectorAll('img.svgicon');
+          svgicons.forEach(async (el) => {
+            if(el.clientHeight > 0) {
+              loadSvgIcon(el);
+            } else {
+              el.onload = loadSvgIcon.bind(null, el);
             }
           });
         });
@@ -153,4 +176,12 @@ document.addEventListener('DOMContentLoaded',function(){
   const container = document.querySelector('#webslides:not([done="done"])');
   if(container) new WebSlides();
 });
+
+console.log(`WebSlides.md - 能运行在任意 Playground 上的演示文稿
+支持 Markdown 扩展语法
+与【码上掘金】平台搭配使用更佳
+当前版本：${VERSION}
+代码仓库：https://github.com/xitu/webslides.md
+官网：http://slides.juejin.fun
+`);
 // export default marked;

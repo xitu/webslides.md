@@ -1,3 +1,4 @@
+const {version} = require('./package.json');
 const options = {
   entryPoints: ['src/index.js'],
   // outdir: 'dist',
@@ -9,7 +10,10 @@ const options = {
     '.woff': 'file',
     '.ttf': 'file',
     '.woff2': 'file',
-  }
+  },
+  define: { 
+    VERSION: `"${version}"`,
+  },
 };
 
 if(process.env.mode === 'production') {

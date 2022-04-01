@@ -15,12 +15,6 @@ blockquote p:last-child {
 
 img.svgicon {
   margin: 0 0.25em;
-}
-
-img.svgicon.small {
-  width: 1em;
-}
-
-img.svgicon.large {
-  width: 8em;
+  vertical-align: text-bottom;
+  width: 1.3em;
 }
