@@ -109,9 +109,9 @@ window.WebSlides = class MDSlides extends WebSlides {
             });
 
           section.innerHTML = marked.parse(content)
-            .replace(/<!--([\^\$])\s*([^\n]*?)-->/img, '<textarea type="webslides-attrs" style="display:none" position="$1">$2</textarea>');
+            .replace(/<!--([\^\$])\s*([^\n]*?)-->/img, '<script type="text/webslides-attrs" position="$1">$2</script>');
 
-          const preattrs = section.querySelectorAll('textarea[type="webslides-attrs"]');
+          const preattrs = section.querySelectorAll('script[type="text/webslides-attrs"]');
           preattrs.forEach((el) => {
             const node = el.getAttribute('position') === '^' ? el.nextElementSibling : el.previousElementSibling;
             if(node) {
