@@ -73,6 +73,19 @@ async function loadSvgIcon(el) {
   el.remove();
 }
 
+function findSibling(el, pos = el.getAttribute('position')) {
+  const node = pos === '^' ? el.nextElementSibling : el.previousElementSibling;
+  if(node) {
+    if(node.nodeName.toLowerCase() === 'br') {
+      return findSibling(node, pos);
+    }
+    return node;
+  } else if(pos === '$') {
+    return el.parentNode;
+  }
+  return null;
+}
+
 window.WebSlides = class MDSlides extends WebSlides {
   static get marked() {
     return marked;
@@ -126,7 +139,7 @@ window.WebSlides = class MDSlides extends WebSlides {
           
           const preattrs = section.querySelectorAll('script[type="text/webslides-attrs"]');
           preattrs.forEach((el) => {
-            const node = el.getAttribute('position') === '^' ? el.nextElementSibling : el.previousElementSibling;
+            const node = findSibling(el);
             if(node) {
               const attrs = JSON.parse(el.textContent);
               for(const [k, v] of Object.entries(attrs)) {
