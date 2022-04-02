@@ -16,6 +16,22 @@ import svgicon from './extensions/svgicon';
 import config from './config';
 import {addCSS, htmlDecode, trimIndent} from './utils';
 
+const blockTags = 'address|article|aside|base|basefont|blockquote|body|caption'
++ '|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption'
++ '|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe'
++ '|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option'
++ '|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr'
++ '|track|ul';
+
+const blockReg = new RegExp(`(<\\s*(?:(?:\\/\\s*(?:${blockTags})\\s*)|(?:(?:${blockTags})\\s*\\/\\s*)|hr)>\\s*?)\\n`, 'ig');
+
+class Renderer extends marked.Renderer {
+  code(code, infostring, escaped) {
+    code = code.replace(blockReg, "$1"); // 代码中去掉在Block元素后补的回车
+    return super.code(code, infostring, escaped);
+  }
+}
+
 const defaultOptions = {
   loop: false,
   autoslide: false,
@@ -26,7 +42,7 @@ const defaultOptions = {
   scrollWait: 450,
   slideOffset: 50,
   marked: {
-    renderer: new marked.Renderer(),
+    renderer: new Renderer(),
     highlight: function(code, lang) {
       const Prism = require('prismjs');
       const language = Prism.languages[lang];
@@ -119,13 +135,11 @@ window.WebSlides = class MDSlides extends WebSlides {
           if(WebSlides.config.indent) {
             content = trimIndent(content);
           }
+
           content = content
-            .replace(/(\/[\w_][\w-_"]*)\s*>\n(?![^\S\n]*<)/img,(a, b) => {
-              if(b === '/div' || b === '/p' || /^\/h/.test(b)) {
-                return `${b}>\n\n`;
-              }
-              return `${b}>\n`;
-            }); //尽量在HTML标签后补回车
+            .replace(blockReg,(a) => {
+              return `${a}\n`;
+            }); //需要在Block元素后补一个回车，不然解析会有问题
 
           section.innerHTML = marked.parse(content);
 
