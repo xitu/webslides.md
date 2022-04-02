@@ -122,7 +122,7 @@ NodePPT 也是结合了 WebSlides 和 Markdown，它通过 markdown-it 解析 Ma
 
 可以看 [WebSlides 官网](https://webslides.tv) 教程，有详细的HTML和CSS说明，所有用法都保留了支持。
 
-> 额外支持的详细用法，未完成，等待补充……
+详细文档：https://slides.juejin.fun/
 
 ---
 
