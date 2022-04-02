@@ -3,27 +3,70 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>码上掘金配套的演示文稿</title>
+    <title>上下键翻页：码上掘金配套的演示文稿</title>
     <link rel="stylesheet" type="text/css" href="static/webslides.css">
     <script src="static/webslides.js"></script>
   </head>
   <body>
-    <article id="webslides" class="vertical">
+    <article id="webslides" class="vertical" codeTheme="prism-vs">
       <section>
         :.background[style="background-image:url('https://webslides.tv/static/images/nature.jpg')"]
 
-        :div.wrap.aligncenter
+        :.wrap.aligncenter
           # **Create beautiful stories**
 
           WebSlides makes HTML presentations easy.<br>
             Just the essentials and using lovely CSS.{$.text-intro}
 
           [Webslides.md {@github}](https://github.com/xitu/webslides.md){$.button.zoomIn[target="blank"]}
-          <!-- <p>
-            <a href="https://webslides.tv/webslides-latest.zip" class="button zoomIn" title="Download WebSlides for free">
-              WebSlides.md
-            </a>
-          </p> -->
+      </section>
+      <section>
+          <!--.wrap = container (width: 90%) -->
+          :.wrap.size-50.aligncenter
+            ## **Why WebSlides.md?**
+
+            Good karma & Productivity.{$.text-intro}
+            
+            :.bg-white.shadow
+              {^.flexblock.reasons}
+              - ## 创作生动有趣的演示文稿
+                WebSlides.md 可以用简单的方式创作交互式演示文稿，你不需要配置任何环境，只需要在任意HTML页面上引入一个简单的JS文件和CSS文件即可完成初始工作。
+              - ## 简便的 Markdown 语法和扩展
+                WebSlides.md 支持与Github一致的Markdown语法，并支持一些增强的扩展，以便于应用更丰富的语义化CSS到你的演示文稿中。
+          <!-- .end .wrap -->
+      </section>
+      <section class="bg-white">
+        :.wrap
+          :.grid.vertical-align
+            :.column
+              ### **WebSlides.md 非常简单**
+              {^.text-intro}
+              页面的`#webslides`元素中的每个`&lt;section&gt;`标签表示一页文稿。
+
+              在文稿中可以使用 Markdown，通过扩展`:@html`，也可以随意混合使用HTML，能够非常方便地书写出任何你想要实现的效果。
+
+            :.column
+              ```html
+              <article id="webslides">
+                <!-- Slide 1 -->
+                <section>
+                   # Design for trust
+                </section>
+                <!-- Slide 2 -->
+                <section class="bg-primary">
+                  :.wrap
+                    ## .wrap = container (width: 90%)
+                </section>
+                <section>
+                  :@html
+                    <h1>标题</h1>
+                    <p class="text-intro">介绍</p>
+                </section>
+              </article>
+              ```
+      </section>
+      <section>
+        {@twitter?stroke=red&fill=transparent}
       </section>
     </article>
   </body>

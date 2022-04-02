@@ -69,6 +69,9 @@ async function loadSvgIcon(el) {
   if(el.hasAttribute('fill')) {
     svg.style.fill = el.getAttribute('fill');
   }
+  if(el.hasAttribute('stroke')) {
+    svg.style.stroke = el.getAttribute('stroke');
+  }
   el.parentNode.insertBefore(frag.childNodes[0], el);
   el.remove();
 }
@@ -151,16 +154,6 @@ window.WebSlides = class MDSlides extends WebSlides {
               el.remove();
             }
           });
-
-          // svgicon
-          const svgicons = section.querySelectorAll('img.svgicon');
-          svgicons.forEach(async (el) => {
-            if(el.clientHeight > 0) {
-              loadSvgIcon(el);
-            } else {
-              el.onload = loadSvgIcon.bind(null, el);
-            }
-          });
         });
       }
       container.setAttribute('done', 'done');
@@ -168,6 +161,16 @@ window.WebSlides = class MDSlides extends WebSlides {
         options.codeTheme = container.getAttribute('codeTheme');
       }
       container.addEventListener('ws:slide-change', () => {
+        const section = document.querySelector('#webslides section.current');
+        // load svgicon
+        const svgicons = section.querySelectorAll('img.svgicon[fill],img.svgicon[stroke]');
+        svgicons.forEach(async (el) => {
+          if(el.clientHeight > 0) {
+            loadSvgIcon(el);
+          } else {
+            el.onload = loadSvgIcon.bind(null, el);
+          }
+        });
         if(window.mermaid && window.mermaid.init) {
           const mermaidGraphs = document.querySelectorAll('.slide.current .mermaid');
           window.mermaid.init(mermaidGraphs);

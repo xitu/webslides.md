@@ -34,6 +34,6 @@ export default {
     } else {
       className = `${className} small`;
     }
-    return `<img class="${className}" src="${WebSlides.config.CDN}/simple-icons@v6/icons/${file}.svg"${attrs}>`;
+    return `<img class="${className}" src="${WebSlides.config.CDN}/bootstrap-icons/icons/${file}.svg"${attrs}>`;
   }
 };

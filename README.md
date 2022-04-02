@@ -136,7 +136,7 @@ NodePPT 也是结合了 WebSlides 和 Markdown，它通过 markdown-it 解析 Ma
 - [prism](https://github.com/PrismJS/prism)
 - [esbuild](https://github.com/evanw/esbuild)
 - [mermaid](https://github.com/mermaid-js/mermaid)
-- [simple-icons](https://github.com/simple-icons/simple-icons)
+- [bootstrap-icons](https://github.com/twbs/icons)
 - [KaTex](https://github.com/KaTeX/KaTeX)
 - [NodePPT](https://github.com/ksky521/nodeppt)
 - [Slidev](https://github.com/slidevjs/slidev) 
