@@ -10,10 +10,21 @@
 </head>
 <body>
   <article id="webslides" codeTheme="prism-atom-dark" cdn="https://unpkg.com" loop="yes" showIndex="no">
-  <section>
-    :.wrap
-      #每个`&ltabc&gt`标签表示一页文稿。
-  </section>
+    <section>
+      :.wrap
+      ## **流程图**
+      :.grid.vertical-align
+        :.column
+          ### {@bar-chart-steps}[mermaid](https://mermaid-js.github.io/mermaid/#/)流程图{$[target="blank"]}
+
+          {$[style="margin-top:1em"]}你可以通过`:@mermaid`语法来显示流程图。
+        :.column 
+          :@mermaid
+            graph TD
+            A[Client] --> B[Load Balancer]
+            B --> C[Server01]
+            B --> D[Server02]
+    </section>
   </article>
 </body>
 </html>

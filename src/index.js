@@ -7,7 +7,9 @@ import './css/fix.css';
 import {marked} from 'marked';
 import mermaid from './extensions/mermaid';
 import katex from './extensions/katex';
+import attr from './extensions/attr';
 import html from './extensions/html';
+import comment from './extensions/comment';
 import wrapper from './extensions/wrapper';
 import svgicon from './extensions/svgicon';
 
@@ -40,7 +42,8 @@ const defaultOptions = {
     sanitize: false,
     smartLists: true,
     smartypants: false,
-    xhtml: false
+    xhtml: false,
+    headerIds: false,
   },
 };
 
@@ -79,7 +82,7 @@ async function loadSvgIcon(el) {
 function findSibling(el, pos = el.getAttribute('position')) {
   const node = pos === '^' ? el.nextElementSibling : el.previousElementSibling;
   if(node) {
-    if(node.nodeName.toLowerCase() === 'br') {
+    if(node.tagName.toLowerCase() === 'br') {
       return findSibling(node, pos);
     }
     return node;
@@ -108,7 +111,8 @@ window.WebSlides = class MDSlides extends WebSlides {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
         marked.setOptions(markedOpts);
         marked.use(html);
-        marked.use({extensions: [wrapper, mermaid, svgicon, ...katex]});
+        marked.use(comment);
+        marked.use({extensions: [wrapper, attr, mermaid, svgicon, ...katex]});
 
         sections.forEach((section) => {
           let content = htmlDecode(section.innerHTML);
@@ -116,32 +120,27 @@ window.WebSlides = class MDSlides extends WebSlides {
             content = trimIndent(content);
           }
           content = content
-            .replace(/([\w_][\w-_"]*)\s*>[^\S\n]*\n(?![^\S\n]*<)/img,(a, b) => {
+            .replace(/([\w_][\w-_"]*)\s*>\n(?![^\S\n]*<)/img,(a, b) => {
               if(b === 'div' || b === 'p' || /^h/.test(b)) {
                 return `${b}>\n\n`;
               }
               return `${b}>\n`;
             }); //尽量在HTML标签后补回车
-          
-          content = content.replace(/{([\^\$])(\.[^\[\]\s]+)?((?:\[[^\[\]\n]+\])*)}/img, (a, b, c, d) => {
-              const className = c ? c.replace(/\./g, ' ').trim() : null;
-              const attrsJson = {};
-              if(className) attrsJson.className = className;
-              d.split(/[\[\]]+/g).forEach((f) => {
-                if(f) {
-                  const [k, v] = f.split('=');
-                  attrsJson[k] = v.replace(/^\s*"(.*)"$/i, "$1");
-                }
-              });
-              const attrs = JSON.stringify(attrsJson);
-              return (!b || b === '^') ? `<!--^${attrs}-->` : `<!--$${attrs}-->`;
-            });
 
-          section.innerHTML = marked.parse(content)
-            .replace(/<!--([\^\$])\s*([^\n]*?)-->/img, '<script type="text/webslides-attrs" position="$1">$2</script>');
+          section.innerHTML = marked.parse(content);
+
+          const precode = section.querySelectorAll('pre:not([class*=lang-]) code');
+          precode.forEach((el) => {
+            if(!el.parentNode.className) el.parentNode.className = 'lang-plaintext';
+          });
           
           const preattrs = section.querySelectorAll('script[type="text/webslides-attrs"]');
           preattrs.forEach((el) => {
+            const parent = el.parentElement;
+            if(parent && parent.tagName.toLowerCase() === 'p' && parent.childNodes.length === 1) {
+              parent.setAttribute('position', el.getAttribute('position'));
+              el = parent;
+            }
             const node = findSibling(el);
             if(node) {
               const attrs = JSON.parse(el.textContent);

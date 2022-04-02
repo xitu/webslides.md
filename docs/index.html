@@ -18,7 +18,7 @@
           WebSlides makes HTML presentations easy.<br>
             Just the essentials and using lovely CSS.{$.text-intro}
 
-          [Webslides.md {@github}](https://github.com/xitu/webslides.md){$.button.zoomIn[target="blank"]}
+          [Webslides.md {@github?fill=white}](https://github.com/xitu/webslides.md){$.button.zoomIn[target="blank"]}
       </section>
       <section>
           <!--.wrap = container (width: 90%) -->
@@ -35,7 +35,7 @@
                 WebSlides.md 支持与Github一致的Markdown语法，并支持一些增强的扩展，以便于应用更丰富的语义化CSS到你的演示文稿中。
           <!-- .end .wrap -->
       </section>
-      <section class="bg-white">
+      <section>
         :.wrap
           :.grid.vertical-align
             :.column
@@ -66,7 +66,200 @@
               ```
       </section>
       <section>
-        {@twitter?stroke=red&fill=transparent}
+        :.wrap
+          ## **特性**
+          {^.flexblock.features}
+          - ### <span>→</span> 简单的控制方式
+            使用键盘的方向键、Enter和大写F键进行控制。
+          - ### <span>{@link}</span> Hash路由
+            通过Hash跳转到特定的Slide页。
+          - ### <span>{@markdown}</span> Markdown语法
+            支持与Github一致的Markdown语法。
+          - ### <span>{@filetype-css}</span> 语义化的CSS类型
+            非常容易理解的语义化CSS，方便书写。
+          - ### <span>{@grid-1x2}</span> 灵活的布局
+            支持flexblock和grid布局方式。
+          - ### <span>{@magic}</span> 强大的内置扩展
+            提供公式、流程图和SVG图标扩展，支持自定义扩展。
+      </section>
+      <section>
+        :.wrap
+          ## **基础用法**
+          :.grid.vertical-align
+            :.column
+              ### {@file-slides} 继承 WebSlides
+              {^[style="margin-top:2em"]}
+              WebSlides.md 完全继承了WebSlides标准版的用法，因此你可以参考[WebSlides官网](https://webslides.tv/){$[target="blank"]}上的说明文档，使用WebSlides默认提供的任何特性。
+
+              注意，原版的WebSlides只支持HTML的标准写法，WebSlides.md增加了Markdown语法支持，但你仍可以使用`:@html`扩展来使用标准的HTML。
+
+              - {$[style="list-style:circle;margin-left:2rem;"]}[Components](https://webslides.tv/demos/components.html){$[target="blank"]}
+              - {$[style="list-style:circle;margin-left:2rem;"]}[Classes](https://webslides.tv/demos/classes.html){$[target="blank"]}
+              - {$[style="list-style:circle;margin-left:2rem;"]}[Media](https://webslides.tv/demos/media.html){$[target="blank"]}
+
+            :.column
+              ```html
+              <section>
+                :@html
+                  <!--内置扩展通过缩进来标识范围
+                    这是WebSlides.md的设计理念
+                    这样书写的内容具有更好的可读性-->
+                  <div class="wrap">
+                    <h1>我是标题</h1>
+                    <p class="text-intro">我是一段内容</p>
+                    <p>我是另一段内容</p>
+                  </div>
+                  <!--HTML区域结束-->
+                **我是Markdown内容**
+              </section>
+              ```
+      </section>
+      <section>
+        :.wrap
+          ## **容器扩展**
+          :.grid.vertical-align
+            :.column
+              ### {@code-square}容器简写和缩进
+              {$.text-intro[style="margin-top:0.5em"]}你可以通过`:tag.cls[k=v]`的语法声明HTML容器
+
+              同`:@html`一样，WebSlides.md通过**缩进**来确定容器内容的范围。
+            :.column
+              ```html
+              :.wrap
+                :p.text-intro[style="color:red"]
+                  ## 我是标题
+                  **我是内容**
+                ## 我是新标题
+
+                <!--以上内容相当于-->
+                <div class="wrap">
+                  <p class="text-intro" style="color:red">
+                    <h2>我是标题</h2>
+                    <p>
+                      <strong>我是内容</strong>
+                    </p>
+                  </p>
+                  <h2>我是新标题</h2>
+                </div> 
+              ```
+      </section>
+      <section>
+        :.wrap
+          ## **样式扩展**
+          :.grid.vertical-align
+            :.column
+              ### {@braces-asterisk}样式扩展
+
+              {$[style="margin-top:0.5em"]}你可以通过`{^.class[attrs]}`或`{$.class[attrs]}`的语法扩展来给Markdown元素添加样式。
+
+              样式应用的规则是`{^...}`将样式应用于下一个兄弟节点，`{$...}`将样式应用于上一个兄弟节点，若上一个兄弟节点不存在，则应用于父元素。
+            :.column
+              ```html
+              {^.flexblock}
+              - 列表
+                - [子列](https://juejin.cn){$[target="blank"]}
+                - [子列](https://juejin.cn){$[target="blank"]}
+              - 列表
+                - [子列](https://juejin.cn){$[target="blank"]}
+                - [子列](https://juejin.cn){$[target="blank"]}
+              
+              <!-- 相当于如下 HTML 代码 -->
+              <ul class="flexblock">
+                <ul>
+                  <li><a href="https://juejin.cn" target="blank">掘金</a></li>
+                  <li><a href="https://juejin.cn" target="blank">掘金</a></li>
+                </ul>
+                <ul>
+                  <li><a href="https://juejin.cn" target="blank">掘金</a></li>
+                  <li><a href="https://juejin.cn" target="blank">掘金</a></li>
+                </ul>
+              </ul>
+              ```
+      </section>
+      <section>
+        :.wrap
+          ## **矢量图标**
+          :.grid.vertical-align
+            :.column
+              ### {@bar-chart-steps}矢量图标
+
+              {$[style="margin-top:1em"]}你可以通过`{@svg-token}`的语法扩展来展示矢量图标。
+
+              WebSlides.md 支持所有[bootstrap的矢量图标](https://icons.getbootstrap.com/)
+
+              你还可以通过`{@svg-token?fill=color}`来设置图标的颜色。
+
+            :.column
+              ```html
+                <!--Github、twitter、RSS图标-->
+                - WebSlides.md {@github}
+                - WebSlides.md {@twitter}
+                - WebSlides.md {@rss}
+              ```
+
+              {^.aligncenter}
+              | | | |
+              |---|---|---|
+              |{@github}|{@twitter}|{@rss}|
+              |{@safe}|{@search}|{@send}|
+              |{@hand-thumbs-up}|{@handbag}|{@hash}|
+      </section>
+      <section>
+        :.wrap
+          ## **数学公式**
+          :.grid.vertical-align
+            :.column
+              ### {@percent}[KaTex](https://katex.org/)公式{$[target="blank"]}
+
+              {$[style="margin-top:1em"]}你可以通过`$$ ... $$`的语法扩展来展示显示公式，还可以使用`:@Katex`语法来显示多行公式。
+            :.column
+              ```katex
+              $$ c = \pm\sqrt{a^2 + b^2} $$
+
+              :@KaTex
+                {
+                  "\\f": "#1f(#2)"
+                }    
+        
+                % \f is defined as #1f(#2) using the macro
+                \f\relax{x} = \int_{-\infty}^\infty
+                    \f\hat\xi\,e^{2 \pi i \xi x}
+                    \,d\xi
+              ```
+              $$ c = \pm\sqrt{a^2 + b^2} $$
+
+              :@KaTex
+                {
+                  "\\f": "#1f(#2)"
+                }    
+        
+                % \f is defined as #1f(#2) using the macro
+                \f\relax{x} = \int_{-\infty}^\infty
+                    \f\hat\xi\,e^{2 \pi i \xi x}
+                    \,d\xi
+      </section>
+      <section>
+        :.wrap
+          ## **流程图**
+          :.grid.vertical-align
+            :.column
+              ### {@bar-chart-steps}[mermaid](https://mermaid-js.github.io/mermaid/#/)流程图{$[target="blank"]}
+
+              {$[style="margin-top:1em"]}你可以通过`:@mermaid`语法来显示流程图。
+            :.column
+              ```mermaid
+              :@mermaid
+                graph TD
+                A[Client] --> B[Load Balancer]
+                B --> C[Server01]
+                B --> D[Server02]
+              ```
+
+              :@mermaid
+                graph TD
+                A[Client] --> B[Load Balancer]
+                B --> C[Server01]
+                B --> D[Server02]
       </section>
     </article>
   </body>
