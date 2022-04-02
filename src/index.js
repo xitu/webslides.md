@@ -120,8 +120,8 @@ window.WebSlides = class MDSlides extends WebSlides {
             content = trimIndent(content);
           }
           content = content
-            .replace(/([\w_][\w-_"]*)\s*>\n(?![^\S\n]*<)/img,(a, b) => {
-              if(b === 'div' || b === 'p' || /^h/.test(b)) {
+            .replace(/(\/[\w_][\w-_"]*)\s*>\n(?![^\S\n]*<)/img,(a, b) => {
+              if(b === '/div' || b === '/p' || /^\/h/.test(b)) {
                 return `${b}>\n\n`;
               }
               return `${b}>\n`;
