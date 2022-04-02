@@ -19,3 +19,8 @@ img.svgicon {
   vertical-align: text-bottom;
   width: 1.3em;
 }
+
+section *.shadow {
+  animation: none;
+  -webkit-animation: none;
+}
