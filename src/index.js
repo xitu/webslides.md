@@ -1,7 +1,8 @@
 import 'webslides';
-import 'webslides/static/css/webslides.css';
+// import 'webslides/static/css/webslides.css';
 import 'prismjs/themes/prism.css';
 import 'katex/dist/katex.css';
+import './css/webslides.css';
 import './css/fix.css';
 
 import {marked} from 'marked';
@@ -14,7 +15,7 @@ import wrapper from './extensions/wrapper';
 import svgicon from './extensions/svgicon';
 
 import config from './config';
-import {addCSS, htmlDecode, trimIndent} from './utils';
+import {addCSS, htmlDecode, trimIndent, zoom} from './utils';
 
 const blockTags = 'address|article|aside|base|basefont|blockquote|body|caption'
 + '|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption'
@@ -125,7 +126,7 @@ window.WebSlides = class MDSlides extends WebSlides {
     if(container) {
       applyConfig(config, container);
       applyConfig(options, container);
-      const sections = container.querySelectorAll('section');
+      const sections = container.querySelectorAll('article > section');
       if(sections.length) {
         const markedOpts = Object.assign({}, defaultMarkedOptions, markedOptions);
         marked.setOptions(markedOpts);
@@ -189,8 +190,13 @@ window.WebSlides = class MDSlides extends WebSlides {
         if(window.mermaid && window.mermaid.init) {
           const mermaidGraphs = document.querySelectorAll('.slide.current .mermaid');
           window.mermaid.init(mermaidGraphs);
+          if(mermaidGraphs.length && !section.style.zoom) {
+            if(config.zoom) zoom(section);
+          }
         }
       });
+      // zoom
+      if(config.zoom) sections.forEach(zoom);
     }
     let {codeTheme} = config;
     if(codeTheme && codeTheme !== 'default') {

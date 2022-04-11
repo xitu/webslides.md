@@ -1,4 +1,4 @@
-import {trimIndent} from '../utils';
+import {trimIndent, zoom} from '../utils';
 
 const state = {};
 
@@ -34,6 +34,7 @@ ${token.text}
         };
         const mermaidGraphs = document.querySelectorAll('.slide.current .mermaid');
         mermaid.init(mermaidGraphs);
+        if(mermaidGraphs.length && WebSlides.config.zoom) zoom(document.querySelector('.slide.current'));
       };
     }
     return code;
