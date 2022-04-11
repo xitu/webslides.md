@@ -40,6 +40,7 @@ export function getAttrs(token) {
 export function zoom(section) {
   const h1 = section.clientHeight;
   const h2 = section.parentElement.clientHeight;
+  if(WebSlides.config.debug) console.log(h1, h2);
   if(h1 > h2) {
     const zoomed = 0.925 * Math.sqrt(h2 / h1);
     section.style.zoom = zoomed;

@@ -171,6 +171,10 @@ window.WebSlides = class MDSlides extends WebSlides {
             }
           });
         });
+        // zoom
+        if(config.zoom) {
+          document.querySelectorAll('#webslides > section').forEach(zoom);
+        }
       }
       container.setAttribute('done', 'done');
       if(!options.codeTheme && container.hasAttribute('codeTheme')) {
@@ -195,8 +199,6 @@ window.WebSlides = class MDSlides extends WebSlides {
           }
         }
       });
-      // zoom
-      if(config.zoom) sections.forEach(zoom);
     }
     let {codeTheme} = config;
     if(codeTheme && codeTheme !== 'default') {
