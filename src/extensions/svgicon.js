@@ -21,11 +21,11 @@ export default {
   },
   renderer(token) {
     const {file, query} = token;
-    let className = "svgicon";
+    let className = 'svgicon';
     let attrs = '';
     if(query) {
       const {searchParams} = new URL(`svgicon://svgicon?${query}`);
-      for(let [key, value] of searchParams.entries()) {
+      for(const [key, value] of searchParams.entries()) {
         attrs = `${attrs} ${key}="${value}"`;
         if(key === 'style') {
           attrs = `${attrs} data-style=${value}`;
@@ -35,5 +35,5 @@ export default {
       className = `${className} small`;
     }
     return `<img class="${className}" src="${WebSlides.config.CDN}/bootstrap-icons/icons/${file}.svg"${attrs}>`;
-  }
+  },
 };

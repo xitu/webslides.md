@@ -27,7 +27,7 @@ const blockReg = new RegExp(`(<\\s*(?:(?:\\/\\s*(?:${blockTags})\\s*)|(?:(?:${bl
 
 class Renderer extends marked.Renderer {
   code(code, infostring, escaped) {
-    code = code.replace(blockReg, "$1"); // 代码中去掉在Block元素后补的回车
+    code = code.replace(blockReg, '$1'); // 代码中去掉在Block元素后补的回车
     return super.code(code, infostring, escaped);
   }
 }
@@ -43,7 +43,7 @@ const defaultOptions = {
   slideOffset: 50,
   marked: {
     renderer: new Renderer(),
-    highlight: function(code, lang) {
+    highlight(code, lang) {
       const Prism = require('prismjs');
       const language = Prism.languages[lang];
       if(language) {
@@ -66,7 +66,7 @@ const defaultOptions = {
 function applyConfig(config, el) {
   Object.keys(config).forEach((key) => {
     if(el.hasAttribute(key)) {
-      let value = el.getAttribute(key);
+      const value = el.getAttribute(key);
       const type = typeof config[key];
       if(type === 'boolean') {
         config[key] = value && value !== 'no' && value !== 'false';
@@ -102,7 +102,8 @@ function findSibling(el, pos = el.getAttribute('position')) {
       return findSibling(node, pos);
     }
     return node;
-  } else if(pos === '$') {
+  }
+  if(pos === '$') {
     return el.parentNode;
   }
   return null;
@@ -112,9 +113,11 @@ window.WebSlides = class MDSlides extends WebSlides {
   static get marked() {
     return marked;
   }
+
   static get config() {
     return config;
   }
+
   constructor({marked: markedOptions = {}, ...options} = {}) {
     const container = document.querySelector('#webslides:not([done="done"])');
     const {marked: defaultMarkedOptions, ...defaultOpts} = defaultOptions;
@@ -137,9 +140,9 @@ window.WebSlides = class MDSlides extends WebSlides {
           }
 
           content = content
-            .replace(blockReg,(a) => {
+            .replace(blockReg, (a) => {
               return `${a}\n`;
-            }); //需要在Block元素后补一个回车，不然解析会有问题
+            }); // 需要在Block元素后补一个回车，不然解析会有问题
 
           section.innerHTML = marked.parse(content);
 
@@ -147,7 +150,7 @@ window.WebSlides = class MDSlides extends WebSlides {
           precode.forEach((el) => {
             if(!el.parentNode.className) el.parentNode.className = 'lang-plaintext';
           });
-          
+
           const preattrs = section.querySelectorAll('script[type="text/webslides-attrs"]');
           preattrs.forEach((el) => {
             const parent = el.parentElement;
@@ -161,8 +164,7 @@ window.WebSlides = class MDSlides extends WebSlides {
               for(const [k, v] of Object.entries(attrs)) {
                 if(k === 'className') {
                   node.className = node.className ? `${node.className} ${v}` : v;
-                }
-                else node.setAttribute(k, v);
+                } else node.setAttribute(k, v);
               }
               el.remove();
             }
@@ -177,7 +179,7 @@ window.WebSlides = class MDSlides extends WebSlides {
         const section = document.querySelector('#webslides section.current');
         // load svgicon
         const svgicons = section.querySelectorAll('img.svgicon[fill],img.svgicon[stroke]');
-        svgicons.forEach(async (el) => {
+        svgicons.forEach((el) => {
           if(el.clientHeight > 0) {
             loadSvgIcon(el);
           } else {
@@ -201,7 +203,7 @@ window.WebSlides = class MDSlides extends WebSlides {
   }
 };
 
-document.addEventListener('DOMContentLoaded',function(){
+document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('#webslides:not([done="done"])');
   if(container) new WebSlides();
 });
