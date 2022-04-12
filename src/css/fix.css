@@ -24,3 +24,7 @@ section *.shadow {
   animation: none;
   -webkit-animation: none;
 }
+
+section.current {
+  transition: zoom 0.5s;
+}

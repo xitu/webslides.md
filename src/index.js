@@ -211,9 +211,7 @@ window.WebSlides = class MDSlides extends WebSlides {
     super(options);
     if(config.zoom) {
       window.addEventListener('resize', () => {
-        document.querySelectorAll('#webslides section.slide').forEach((section) => {
-          zoom(section);
-        });
+        document.querySelectorAll('#webslides section.slide').forEach(zoom);
       });
     }
   }
