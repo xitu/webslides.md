@@ -198,6 +198,7 @@ window.WebSlides = class MDSlides extends WebSlides {
             if(config.zoom) zoom(section);
           }
         }
+        if(config.zoom) zoom(section);
       });
     }
     let {codeTheme} = config;
@@ -208,6 +209,13 @@ window.WebSlides = class MDSlides extends WebSlides {
       addCSS(codeTheme);
     }
     super(options);
+    if(config.zoom) {
+      window.addEventListener('resize', () => {
+        document.querySelectorAll('#webslides section.slide').forEach((section) => {
+          zoom(section);
+        });
+      });
+    }
   }
 };
 
